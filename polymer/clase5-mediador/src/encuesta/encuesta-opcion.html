@@ -1,4 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 
 <dom-module id="encuesta-opcion">
     <template>
@@ -18,7 +20,12 @@
       }
     </style>
 
-    <p on-click="setMarcada" class$="[[opcionClass]]">[[id]] - [[titulo]]</p>
+    <p on-click="setMarcada" class$="[[opcionClass]]">
+      
+      <iron-icon icon="[[icono]]"></iron-icon>
+      
+      [[id]] - [[titulo]]
+    </p>
 
   </template>
 
@@ -50,11 +57,17 @@
                     opcionClass: {
                         type: String,
                         computed: 'calcularClase(marcada)'
+                    },
+                    icono: {
+                        type: String,
+                        computed: 'calcularIcono(marcada)'
                     }
                 };
             }
 
             calcularClase = marcada => marcada == this.id ? 'marcada' : 'desmarcada';
+
+            calcularIcono = marcada => marcada == this.id ? 'icons:check-box' : 'icons:check-box-outline-blank';
 
             setMarcada = () => this.dispatchEvent(new CustomEvent('item-marcado', {
                 detail: {

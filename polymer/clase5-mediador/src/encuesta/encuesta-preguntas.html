@@ -69,6 +69,14 @@
              */
             ready() {
                 super.ready();
+                window.addEventListener('keypress', this.escucharTeclado.bind(this));
+            }
+
+            escucharTeclado(e) {
+                let key = parseInt(e.key);
+                if (!Number.isNaN(key) && key > 0 && key <= this.opciones.length) {
+                    this.marcada = key - 1;
+                }
             }
 
         }
