@@ -1,0 +1,42 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="./two-way.html">
+
+<dom-module id="clase6-app">
+    <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    
+    <paper-input label="Ingresa tu nombre" value="{{nombre}}"></paper-input>
+    <paper-input label="One way binding" value="[[nombre]]"></paper-input>
+    <p>Lo que has escrito es: [[nombre]]</p>
+    <br />
+    <two-way nombre="{{nombre}}"></two-way>
+    
+  </template>
+
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class Clase6App extends Polymer.Element {
+            static get is() {
+                return 'clase6-app';
+            }
+            static get properties() {
+                return {
+                    nombre: {
+                        type: String,
+                        value: ''
+                    }
+                };
+            }
+        }
+
+        window.customElements.define(Clase6App.is, Clase6App);
+    </script>
+</dom-module>
