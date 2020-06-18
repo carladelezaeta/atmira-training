@@ -12,6 +12,7 @@
     
     <paper-input label="Ingresa tu nombre" value="{{nombre}}"></paper-input>
     <paper-input label="One way binding" value="[[nombre]]"></paper-input>
+    <input type="text" value="{{nombre::input}}">
     <p>Lo que has escrito es: [[nombre]]</p>
     <br />
     <two-way nombre="{{nombre}}"></two-way>
