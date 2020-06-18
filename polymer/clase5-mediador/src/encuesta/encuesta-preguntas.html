@@ -8,8 +8,14 @@
         font-family:Verdana, Geneva, Tahoma, sans-serif;
         display: block
       }
+      .contador {
+          background-color: orangered;
+          color: white;
+          border-radius: 10px;
+          padding: 5px;
+      }
     </style>
-
+    <p class="contador">Tiempo limite: [[contador]]</p>
     <p>[[cuestion]]</p>
     <template is="dom-repeat" items="[[opciones]]">
       <encuesta-opcion
@@ -19,7 +25,7 @@
         on-item-marcado="actualizarMarcada"
       ></encuesta-opcion>
     </template>
-
+    <button on-click="resetContador">Reiniciar contador</button>
     </template>
 
     <script>
@@ -49,7 +55,9 @@
                     marcada: {
                         type: Number,
                         value: null
-                    }
+                    },
+                    contador: Number,
+                    reloj: Object
                 };
             }
 
@@ -70,6 +78,21 @@
             ready() {
                 super.ready();
                 window.addEventListener('keypress', this.escucharTeclado.bind(this));
+                this.resetContador();
+                this.comenzarContador();
+            }
+
+            resetContador() {
+                this.contador = 60;
+            }
+
+            comenzarContador() {
+                this.reloj = setTimeout(() => {
+                    if (this.contador > 0) {
+                        this.contador -= 1;
+                        this.comenzarContador();
+                    }
+                }, 1000);
             }
 
             escucharTeclado(e) {
@@ -77,6 +100,10 @@
                 if (!Number.isNaN(key) && key > 0 && key <= this.opciones.length) {
                     this.marcada = key - 1;
                 }
+            }
+
+            disconnectedCallback() {
+                clearTimeout(this.reloj);
             }
 
         }
