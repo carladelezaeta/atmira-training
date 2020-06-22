@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../encuesta/encuesta-element.html">
 <link rel="import" href="../password/password-complex.html">
+<link rel="import" href="../intereses/intereses-element.html">
 
 <dom-module id="clase5-mediador-app">
     <template>
@@ -13,10 +14,17 @@
           padding: 5px;
       }
     </style>
-    <h1>Encuesta: </h1>
-    <encuesta-element></encuesta-element>
-    <h1>Password</h1>
-    <password-complex></password-complex>
+    <div>
+        <h1>Encuesta: </h1>
+        <encuesta-element></encuesta-element>
+        <h1>Password</h1>
+        <password-complex></password-complex>
+    </div>
+    <div>
+        <h1>Interés</h1>
+        <intereses-element></intereses-element>
+    </div>
+
   </template>
 
     <script>

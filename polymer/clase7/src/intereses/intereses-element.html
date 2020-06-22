@@ -1,0 +1,127 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="./interes-item.html">
+
+<dom-module id="intereses-element">
+    <template>
+    <style>
+      :host {
+        display: block
+      }
+      .alert {
+        color: #ff0000;
+      }
+      paper-input {
+        --primary-text-color: #black;
+        --paper-input-container-color: black;
+        --paper-input-container-focus-color: #019b09;
+        --paper-input-container-invalid-color: red;
+      }
+    </style>
+  
+    <paper-input label="Ingresa tu interes y pulsa enter:" disabled="[[limiteAlcanzado]]" value="{{interes::input}}" on-keypress="_detectarEnter"></paper-input>
+    <template is="dom-repeat" items="{{intereses}}" as="interes">
+      <interes-item interes="[[interes]]" id="[[index]]" on-borrar="borrarInteres"></interes-item>
+    </template>
+    <template is="dom-if" if="[[limiteAlcanzado]]">
+      <p class="alert">Solo se pueden agregar hasta [[limite]] intereses</p>
+    </template>
+
+    </template>
+
+    <script>
+        /**
+         * `intereses-element` Description
+         *
+         * @summary ShortDescription.
+         * @customElement
+         * @polymer
+         * @extends {Polymer.Element}
+         */
+        class InteresesElement extends Polymer.Element {
+            /**
+             * String providing the tag name to register the element under.
+             */
+            static get is() {
+                return 'intereses-element';
+            }
+
+            /**
+             * Object describing property-related metadata used by Polymer features
+             */
+            static get properties() {
+                return {
+                    intereses: {
+                        type: Array,
+                        value: () => []
+                    },
+                    interes: {
+                        type: String,
+                        value: ''
+                    },
+                    limite: {
+                        type: Number,
+                        value: 3
+                    },
+                    limiteAlcanzado: {
+                        type: Boolean,
+                        value: false,
+                        readonly: true
+                    }
+                };
+            }
+
+            /**
+             * Array of strings describing multi-property observer methods and their
+             * dependant properties
+             */
+            static get observers() {
+                return [
+                    '_interesesChanged(intereses.splices)'
+                ];
+            }
+
+            _detectarEnter = e => e.charCode == 13 ? this._agregarInteres() : undefined;
+
+            _agregarInteres = () => {
+                if (!this.limiteAlcanzado) {
+                    this.push('intereses', this.interes);
+                    this.interes = '';
+                }
+            }
+
+            borrarInteres = e => this.splice('intereses', e.detail.id, 1);
+
+            _interesesChanged = (data) => {
+                if (data) {
+                    const {
+                        indexSplices: splices
+                    } = data;
+                    this.set('limiteAlcanzado', splices[0].object.length === this.limite);
+                }
+
+            }
+
+            /**
+             * Instance of the element is created/upgraded. Use: initializing state,
+             * set up event listeners, create shadow dom.
+             * @constructor
+             */
+            constructor() {
+                super();
+            }
+
+            /**
+             * Use for one-time configuration of your component after local DOM is initialized. 
+             */
+            ready() {
+                super.ready();
+            }
+
+        }
+
+        window.customElements.define(InteresesElement.is, InteresesElement);
+    </script>
+</dom-module>
