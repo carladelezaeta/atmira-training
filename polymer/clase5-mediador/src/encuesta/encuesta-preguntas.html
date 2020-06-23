@@ -1,0 +1,113 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="./encuesta-opcion.html">
+<dom-module id="encuesta-preguntas">
+    <template>
+    <style>
+      :host {
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+        display: block
+      }
+      .contador {
+          background-color: orangered;
+          color: white;
+          border-radius: 10px;
+          padding: 5px;
+      }
+    </style>
+    <p class="contador">Tiempo limite: [[contador]]</p>
+    <p>[[cuestion]]</p>
+    <template is="dom-repeat" items="[[opciones]]">
+      <encuesta-opcion
+        titulo="[[item]]"
+        id="[[index]]"
+        marcada=[[marcada]]
+        on-item-marcado="actualizarMarcada"
+      ></encuesta-opcion>
+    </template>
+    <button on-click="resetContador">Reiniciar contador</button>
+    </template>
+
+    <script>
+        /**
+         * `encuesta-preguntas` Description
+         *
+         * @summary ShortDescription.
+         * @customElement
+         * @polymer
+         * @extends {Polymer.Element}
+         */
+        class EncuestaPreguntas extends Polymer.Element {
+            /**
+             * String providing the tag name to register the element under.
+             */
+            static get is() {
+                return 'encuesta-preguntas';
+            }
+
+            /**
+             * Object describing property-related metadata used by Polymer features
+             */
+            static get properties() {
+                return {
+                    cuestion: String,
+                    opciones: Array,
+                    marcada: {
+                        type: Number,
+                        value: null
+                    },
+                    contador: Number,
+                    reloj: Object
+                };
+            }
+
+            actualizarMarcada = (e) => this.marcada = e.detail.id;
+
+            /**
+             * Instance of the element is created/upgraded. Use: initializing state,
+             * set up event listeners, create shadow dom.
+             * @constructor
+             */
+            constructor() {
+                super();
+            }
+
+            /**
+             * Use for one-time configuration of your component after local DOM is initialized. 
+             */
+            ready() {
+                super.ready();
+                window.addEventListener('keypress', this.escucharTeclado.bind(this));
+                this.resetContador();
+                this.comenzarContador();
+            }
+
+            resetContador() {
+                this.contador = 60;
+            }
+
+            comenzarContador() {
+                this.reloj = setTimeout(() => {
+                    if (this.contador > 0) {
+                        this.contador -= 1;
+                        this.comenzarContador();
+                    }
+                }, 1000);
+            }
+
+            escucharTeclado(e) {
+                let key = parseInt(e.key);
+                if (!Number.isNaN(key) && key > 0 && key <= this.opciones.length) {
+                    this.marcada = key - 1;
+                }
+            }
+
+            disconnectedCallback() {
+                clearTimeout(this.reloj);
+            }
+
+        }
+
+        window.customElements.define(EncuestaPreguntas.is, EncuestaPreguntas);
+    </script>
+</dom-module>

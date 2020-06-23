@@ -1,0 +1,75 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="interes-item">
+    <template>
+    <style>
+      :host {
+        display: block;
+        padding: 10px;
+      }
+      button {
+        color: #f00;
+      }
+    </style>
+
+    <span>[[interes]]</span>
+    <button on-click="borrarInteres">X</button>
+
+  </template>
+
+    <script>
+        /**
+         * `interes-item` Description
+         *
+         * @summary ShortDescription.
+         * @customElement
+         * @polymer
+         * @extends {Polymer.Element}
+         */
+        class InteresItem extends Polymer.Element {
+            /**
+             * String providing the tag name to register the element under.
+             */
+            static get is() {
+                return 'interes-item';
+            }
+
+            /**
+             * Object describing property-related metadata used by Polymer features
+             */
+            static get properties() {
+                return {
+                    interes: String,
+                    id: Number
+                };
+            }
+
+            borrarInteres = () => {
+                this.dispatchEvent(new CustomEvent('borrar', {
+                    detail: {
+                        id: this.id
+                    }
+                }));
+            }
+
+            /**
+             * Instance of the element is created/upgraded. Use: initializing state,
+             * set up event listeners, create shadow dom.
+             * @constructor
+             */
+            constructor() {
+                super();
+            }
+
+            /**
+             * Use for one-time configuration of your component after local DOM is initialized. 
+             */
+            ready() {
+                super.ready();
+            }
+
+        }
+
+        window.customElements.define(InteresItem.is, InteresItem);
+    </script>
+</dom-module>

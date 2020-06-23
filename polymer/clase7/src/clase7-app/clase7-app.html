@@ -1,0 +1,56 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../encuesta/encuesta-element.html">
+<link rel="import" href="../password/password-complex.html">
+<link rel="import" href="../intereses/intereses-element.html">
+<link rel="import" href="../registro/registro-form.html">
+
+<dom-module id="clase7-app">
+    <template>
+    <style>
+      :host {
+        display: block;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      h1 {
+          padding: 5px;
+      }
+    </style>
+    <div>
+        <h1>Encuesta: </h1>
+        <encuesta-element></encuesta-element>
+        <h1>Password</h1>
+        <password-complex></password-complex>
+    </div>
+    <div>
+        <h1>Interés</h1>
+        <intereses-element></intereses-element>
+    </div>
+    <div>
+        <h1>Registro</h1>
+        <registro-form></registro-form>
+    </div>
+
+  </template>
+
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class Clase7App extends Polymer.Element {
+            static get is() {
+                return 'clase7-app';
+            }
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'clase5-mediador-app'
+                    }
+                };
+            }
+        }
+
+        window.customElements.define(Clase7App.is, Clase7App);
+    </script>
+</dom-module>

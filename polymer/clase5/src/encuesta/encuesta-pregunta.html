@@ -1,0 +1,94 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="./encuesta-opcion.html">
+
+<dom-module id="encuesta-pregunta">
+    <template>
+    <style>
+      :host {
+        display: block
+      }
+      p.tiempo {
+          background-color: orangered;
+          color: white;
+          padding: 5px;
+      }
+      p.titulo-pregunta {
+        text-align: center;
+      }
+    </style>
+      <p class="tiempo">Tiempo limite: [[tiempo]]</p>
+      <p class="titulo-pregunta">[[pregunta]]</p>
+      <template is="dom-repeat" items="[[respuestas]]" as="respuesta">
+        <encuesta-opcion 
+            id="opcion[[index]]"
+            on-marcada="opcionMarcada" 
+            respuesta="[[respuesta]]" 
+            num="[[index]]">
+        </encuesta-opcion>
+      </template>
+    <button on-click="reset">Resetear tiempo</button>
+
+    </template>
+
+    <script>
+        class EncuestaPregunta extends Polymer.Element {
+
+            static get is() {
+                return 'encuesta-pregunta';
+            }
+
+            static get properties() {
+                return {
+                    pregunta: String,
+                    respuestas: {
+                        type: Array,
+                        value: function() {
+                            return ['Si', 'No', 'Tal vez']
+                        }
+                    },
+                    tiempo: {
+                        type: Number,
+                        value: 60,
+                        readOnly: true
+                    },
+                    temporizador: Object
+                };
+            }
+
+            reset() {
+                this._setTiempo(60);
+            }
+
+            ready() {
+                super.ready();
+                this.cuentaAtras();
+            }
+
+            cuentaAtras() {
+                if (this.tiempo === 0)  {
+                    return;
+                }
+                this._setTiempo(this.tiempo - 1);
+                this.temporizador = setTimeout(() => this.cuentaAtras(), 1000);
+            }
+
+            disconnectedCallback() {
+                super.disconnectedCallback();
+                clearTimeout(this.temporizador);
+            }
+
+            opcionMarcada(e) {
+                console.log('Han marcado la opción', e.detail.id, e.detail.marcada);
+                this.respuestas.forEach((v, i) => {
+                    if (i != e.detail.id) {
+                        this.shadowRoot.querySelector(`#opcion${i}`).marcada = false;
+                    }
+                });
+            }
+
+        }
+
+        window.customElements.define(EncuestaPregunta.is, EncuestaPregunta);
+    </script>
+</dom-module>
