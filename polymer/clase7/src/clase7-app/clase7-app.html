@@ -2,8 +2,9 @@
 <link rel="import" href="../encuesta/encuesta-element.html">
 <link rel="import" href="../password/password-complex.html">
 <link rel="import" href="../intereses/intereses-element.html">
+<link rel="import" href="../registro/registro-form.html">
 
-<dom-module id="clase5-mediador-app">
+<dom-module id="clase7-app">
     <template>
     <style>
       :host {
@@ -24,6 +25,10 @@
         <h1>Interés</h1>
         <intereses-element></intereses-element>
     </div>
+    <div>
+        <h1>Registro</h1>
+        <registro-form></registro-form>
+    </div>
 
   </template>
 
@@ -32,9 +37,9 @@
          * @customElement
          * @polymer
          */
-        class Clase5MediadorApp extends Polymer.Element {
+        class Clase7App extends Polymer.Element {
             static get is() {
-                return 'clase5-mediador-app';
+                return 'clase7-app';
             }
             static get properties() {
                 return {
@@ -46,6 +51,6 @@
             }
         }
 
-        window.customElements.define(Clase5MediadorApp.is, Clase5MediadorApp);
+        window.customElements.define(Clase7App.is, Clase7App);
     </script>
 </dom-module>

@@ -79,7 +79,8 @@
              */
             static get observers() {
                 return [
-                    '_interesesChanged(intereses.splices)'
+                    '_interesesChanged(intereses.splices)',
+                    '_interesesCasillasChanged(intereses.*)'
                 ];
             }
 
@@ -94,14 +95,19 @@
 
             borrarInteres = e => this.splice('intereses', e.detail.id, 1);
 
-            _interesesChanged = (data) => {
+            _interesesChanged = data => {
                 if (data) {
                     const {
                         indexSplices: splices
                     } = data;
                     this.set('limiteAlcanzado', splices[0].object.length === this.limite);
                 }
+            }
 
+            _interesesCasillasChanged = dataChanged => {
+                if (dataChanged) {
+                    console.log(dataChanged);
+                }
             }
 
             /**

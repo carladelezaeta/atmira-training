@@ -1,6 +1,6 @@
 {
-  "name": "clase5-mediador",
-  "short_name": "clase5-mediador",
-  "start_url": "/",
-  "display": "standalone"
+    "name": "clase7",
+    "short_name": "clase7",
+    "start_url": "/",
+    "display": "standalone"
 }
