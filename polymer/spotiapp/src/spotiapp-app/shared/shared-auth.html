@@ -1,0 +1,22 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+
+<script>
+    window.SpotiApp = window.SpotiApp || {};
+    SpotiApp.SharedAuth = Polymer.dedupingMixin((superClass) => {
+        return class extends superClass {
+            static get properties() {
+                return {
+                    token: {
+                        type: String,
+                        value: '',
+                        observer: '_tokenChange'
+                    },
+                    headers: {
+                        type: Object,
+                        value: () => ({})
+                    }
+                }
+            }
+        }
+    });
+</script>

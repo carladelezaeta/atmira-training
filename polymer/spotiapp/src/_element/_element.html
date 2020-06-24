@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="spotiapp-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class SpotiappApp extends Polymer.Element {
+      static get is() { return 'spotiapp-app'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'spotiapp-app'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(SpotiappApp.is, SpotiappApp);
+  </script>
+</dom-module>

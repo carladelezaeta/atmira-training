@@ -1,0 +1,66 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="about-page">
+    <template>
+    <style>
+      :host {
+        display: block;
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+    </style>
+
+    <h1>Mauro Cendón Hidalgo</h1>
+    <p>mau.cendon@gmx.com</p>
+
+  </template>
+
+    <script>
+        /**
+         * `about-page` Description
+         *
+         * @summary ShortDescription.
+         * @customElement
+         * @polymer
+         * @extends {Polymer.Element}
+         */
+        class AboutPage extends Polymer.Element {
+            /**
+             * String providing the tag name to register the element under.
+             */
+            static get is() {
+                return 'about-page';
+            }
+
+            /**
+             * Object describing property-related metadata used by Polymer features
+             */
+            static get properties() {
+                return {
+
+                };
+            }
+
+            /**
+             * Instance of the element is created/upgraded. Use: initializing state,
+             * set up event listeners, create shadow dom.
+             * @constructor
+             */
+            constructor() {
+                super();
+            }
+
+            /**
+             * Use for one-time configuration of your component after local DOM is initialized. 
+             */
+            ready() {
+                super.ready();
+            }
+
+        }
+
+        window.customElements.define(AboutPage.is, AboutPage);
+    </script>
+</dom-module>

@@ -1,0 +1,6 @@
+{
+  "name": "spotiapp",
+  "short_name": "spotiapp",
+  "start_url": "/",
+  "display": "standalone"
+}

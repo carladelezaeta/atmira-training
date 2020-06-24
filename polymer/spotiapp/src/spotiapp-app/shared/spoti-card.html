@@ -1,0 +1,109 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../../bower_components/paper-badge/paper-badge.html">
+
+<dom-module id="spoti-card">
+    <template>
+    <style>
+      :host {
+        display: block;
+        margin: 15px;
+        max-width: 30%;
+        box-sizing: border-box;
+        --paper-badge-width: 80px;
+        --paper-badge-height: 80px;
+        --paper-badge-background: var(--primary-color);
+        --paper-card-header-color: black;
+      }
+      .card-content {
+        color: black;
+      }
+      label {
+        color: white;
+        background-color: var(--primary-color);
+        border-radius: 15px;
+        padding: 10px;
+      }
+      paper-card {
+        border-radius: 5px;
+      }
+    </style>
+
+    
+    <paper-card image="[[photo]]" elevation="1" animated-shadow="false">
+      <div class="card-content">
+        <h2>[[title]]</h2>
+        <p>
+          <template is="dom-repeat" items="{{artists}}" as="artist">
+            <!--paper-badge label="[[artist.name]]"></paper-badge-->
+            <label for="">[[artist.name]]</label>
+          </template>
+    </p>
+    </div>
+    <div class="card-actions">
+
+    </div>
+    </paper-card>
+
+
+    </template>
+
+    <script>
+        /**
+         * `spoti-card` Description
+         *
+         * @summary ShortDescription.
+         * @customElement
+         * @polymer
+         * @extends {Polymer.Element}
+         */
+        class SpotiCard extends Polymer.Element {
+            /**
+             * String providing the tag name to register the element under.
+             */
+            static get is() {
+                return 'spoti-card';
+            }
+
+            /**
+             * Object describing property-related metadata used by Polymer features
+             */
+            static get properties() {
+                return {
+                    title: {
+                        type: String,
+                        value: ''
+                    },
+                    photo: {
+                        type: String,
+                        value: ''
+                    },
+                    artists: {
+                        type: Array,
+                        value: []
+                    }
+                };
+            }
+
+            /**
+             * Instance of the element is created/upgraded. Use: initializing state,
+             * set up event listeners, create shadow dom.
+             * @constructor
+             */
+            constructor() {
+                super();
+            }
+
+            /**
+             * Use for one-time configuration of your component after local DOM is initialized. 
+             */
+            ready() {
+                super.ready();
+            }
+
+        }
+
+        window.customElements.define(SpotiCard.is, SpotiCard);
+    </script>
+</dom-module>

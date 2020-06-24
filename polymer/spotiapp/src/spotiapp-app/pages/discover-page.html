@@ -1,0 +1,126 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../shared/shared-styles.html">
+<link rel="import" href="../shared/shared-auth.html">
+
+<dom-module id="discover-page">
+    <template>
+    <style include="shared-styles">
+      :host {
+        display: block
+        
+      }
+    </style>
+
+    <paper-input label="Ingrese el nombre del artista" value="{{artistName}}" on-keypress="_handleKeypress"></paper-input>
+    <div>
+      <paper-spinner active="{{showSpinner}}"></paper-spinner>
+      <iron-ajax
+         id="searchajax"
+         url="https://api.spotify.com/v1/search"
+         headers="[[headers]]"
+         params="[[params]]"
+         handle-as="json"
+         on-response="handleResponse"></iron-ajax>
+      
+         <div class="cards animate__animated animate__bounce animate__delay-2s">
+          <template is="dom-repeat" items="{{items}}" as="item">
+            <spoti-card title="[[item.name]]" photo="[[item.images.0.url]]" description=""></spoti-card>
+         </template>
+    </div>
+    </div>
+
+    </template>
+
+    <script>
+        /**
+         * `discover-page` Description
+         *
+         * @summary ShortDescription.
+         * @customElement
+         * @polymer
+         * @extends {Polymer.Element}
+         */
+        class DiscoverPage extends SpotiApp.SharedAuth(Polymer.Element) {
+            /**
+             * String providing the tag name to register the element under.
+             */
+            static get is() {
+                return 'discover-page';
+            }
+
+            /**
+             * Object describing property-related metadata used by Polymer features
+             */
+            static get properties() {
+                return {
+                    artistName: String,
+                    params: {
+                        type: Object,
+                        value: () => ({})
+                    },
+                    items: {
+                        type: Array,
+                        value: []
+                    },
+                    showSpinner: {
+                        type: Boolean,
+                        value: false,
+                        readonly: true
+                    }
+                };
+            }
+
+            handleResponse = e => {
+                if (e.detail.response) {
+                    this.set('showSpinner', false);
+                    setTimeout(() => {
+                        this.set('items', e.detail.response.artists.items);
+                    }, 300);
+                }
+            }
+
+            _tokenChange = token => {
+                if (token !== '') {
+                    this.set('headers.Authorization', `Bearer ${ token }`);
+                }
+            }
+
+            _handleKeypress = e => {
+                //if (e.charCode == 13) {
+                this.set('showSpinner', true);
+                this.set('params', {
+                    q: this.artistName,
+                    type: 'artist',
+                    market: 'ES',
+                    limit: 20
+                });
+                this.$.searchajax.generateRequest();
+                //}
+            }
+
+            /**
+             * Instance of the element is created/upgraded. Use: initializing state,
+             * set up event listeners, create shadow dom.
+             * @constructor
+             */
+            constructor() {
+                super();
+            }
+
+            /**
+             * Use for one-time configuration of your component after local DOM is initialized. 
+             */
+            ready() {
+                super.ready();
+
+            }
+
+        }
+
+        window.customElements.define(DiscoverPage.is, DiscoverPage);
+    </script>
+</dom-module>

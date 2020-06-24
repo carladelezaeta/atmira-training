@@ -1,0 +1,104 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../shared/spoti-card.html">
+<link rel="import" href="../shared/shared-styles.html">
+<link rel="import" href="../shared/shared-auth.html">
+
+<dom-module id="new-releases-page">
+    <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+    
+    <paper-spinner active="{{showSpinner}}"></paper-spinner>
+    
+    <iron-ajax
+      id="newreleasesajax"
+      url="https://api.spotify.com/v1/browse/new-releases?country=ES&limit=20"
+      headers="[[headers]]"
+      handle-as="json"
+      on-response="handleResponse"></iron-ajax>
+
+      <div class="cards animate__animated animate__bounce animate__delay-2s">
+        <template is="dom-repeat" items="{{items}}" as="item">
+          <spoti-card title="[[item.name]]" photo="[[item.images.0.url]]" artists="[[item.artists]]" description=""></spoti-card>
+       </template>
+    </div>
+    </template>
+
+    <script>
+        /**
+         * `new-releases-page` Description
+         *
+         * @summary ShortDescription.
+         * @customElement
+         * @polymer
+         * @extends {Polymer.Element}
+         */
+        class NewReleasesPage extends SpotiApp.SharedAuth(Polymer.Element) {
+            /**
+             * String providing the tag name to register the element under.
+             */
+            static get is() {
+                return 'new-releases-page';
+            }
+
+            /**
+             * Object describing property-related metadata used by Polymer features
+             */
+            static get properties() {
+                return {
+                    items: {
+                        type: Array,
+                        value: []
+                    },
+                    showSpinner: {
+                        type: Boolean,
+                        value: false,
+                        readonly: true
+                    }
+                };
+            }
+
+            _tokenChange = token => {
+                if (token !== '') {
+                    this.set('headers.Authorization', `Bearer ${ token }`);
+                    this.$.newreleasesajax.generateRequest();
+                }
+            }
+
+            handleResponse = e => {
+                if (e.detail.response) {
+                    this.set('showSpinner', false);
+                    setTimeout(() => {
+                        this.set('items', e.detail.response.albums.items);
+                    }, 300);
+                }
+            }
+
+            /**
+             * Instance of the element is created/upgraded. Use: initializing state,
+             * set up event listeners, create shadow dom.
+             * @constructor
+             */
+            constructor() {
+                super();
+            }
+
+            /**
+             * Use for one-time configuration of your component after local DOM is initialized. 
+             */
+            ready() {
+                super.ready();
+                this.set('showSpinner', true);
+            }
+
+        }
+
+        window.customElements.define(NewReleasesPage.is, NewReleasesPage);
+    </script>
+</dom-module>

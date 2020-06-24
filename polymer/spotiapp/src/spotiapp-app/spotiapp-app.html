@@ -1,0 +1,108 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tab.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icon.html">
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="./pages/new-releases-page.html">
+<link rel="import" href="./pages/discover-page.html">
+<link rel="import" href="./pages/about-page.html">
+
+<dom-module id="spotiapp-app">
+    <template>
+    <style>
+      :host {
+        display: block;
+        --primary-color: #5dce00;
+        --secondary-color: rgb(159, 255, 250);
+        --primary-text-color: #fff;
+        --secondary-text-color: #999;
+        --dark-color: #333;
+        --light-color: #fff;
+        color: var(--light-color);
+        --paper-tabs-selection-bar-color: var(--primary-color);
+        --paper-tabs-container: {
+          background-color: var(--dark-color);
+          color: var(--light-color);
+          border-radius: 2px;
+        }
+      }
+      iron-pages {
+        margin: 5px;
+      }
+      .fit {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+
+  <app-header reveals>
+    <app-toolbar>
+      <div main-title>SpotiApp</div>
+      <paper-icon-button icon="delete"></paper-icon-button>
+      <paper-icon-button icon="search"></paper-icon-button>
+      <paper-icon-button icon="close"></paper-icon-button>
+      <paper-progress value="10" indeterminate bottom-item></paper-progress>
+    </app-toolbar>
+  </app-header>
+  <app-drawer id="drawer" swipe-open></app-drawer>
+  <sample-content>
+    <paper-tabs selected="{{selected}}">
+      <paper-tab>Nuevos Lanzamientos</paper-tab>
+      <paper-tab>Buscar Artista</paper-tab>
+      <paper-tab>Acerca de</paper-tab>
+    </paper-tabs>
+
+    
+    <iron-pages selected="{{selected}}">
+      <section><new-releases-page token="[[token]]"></new-releases-page></section>
+      <section><discover-page token="[[token]]"></discover-page></section>
+      <section><about-page></about-page></section>
+    </iron-pages>
+  </sample-content>
+        
+  </template>
+
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class SpotiappApp extends Polymer.Element {
+            static get is() {
+                return 'spotiapp-app';
+            }
+            static get properties() {
+                return {
+                    selected: {
+                        type: String,
+                        value: '',
+                        observer: '_selectedTab'
+                    },
+                    token: {
+                        type: String,
+                        value: ''
+                    },
+                    tokenIsLoaded: {
+                        type: Boolean,
+                        computed: '_tokenIsLoaded(token)'
+                    }
+                };
+            }
+
+            _selectedTab = tab => console.log(tab);
+
+            _tokenIsLoaded = token => token !== '';
+
+            ready = () => {
+                super.ready();
+                this.set('token', 'BQAj0YGlaB_krkR5QjPh4vx8iiDbKc3nKBRyaZzS3Y-PP9z8n0hfxKfG3wd7DCHHK-uAv2E95Fnzx15lRk4');
+            }
+        }
+
+        window.customElements.define(SpotiappApp.is, SpotiappApp);
+    </script>
+</dom-module>
