@@ -1,0 +1,54 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="my-el">
+    <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hola [[nombre]]!</h2>
+    <span>Cambiar nombre: </span><input id="nuevoNombre" type="text" on-keypress="handleKeyPress" />
+    <button id="buttonCambiarNombre" on-click="cambiarNombre">Cambiar</button>
+  </template>
+
+    <script>
+        /**
+         * `my-el`
+         * 
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class MyEl extends Polymer.Element {
+            static get is() {
+                return 'my-el';
+            }
+            static get properties() {
+                return {
+                    nombre: {
+                        type: String,
+                        value: 'Mauro'
+                    }
+                };
+            }
+
+            cambiarNombre = e => {
+                this.set('nombre', this.$.nuevoNombre.value)
+            }
+
+            handleKeyPress = e => {
+                if (e.charCode === 13) {
+                    this.$.buttonCambiarNombre.dispatchEvent(new Event('click'), {
+                        detail: {
+
+                        }
+                    });
+                }
+            }
+        }
+
+        window.customElements.define(MyEl.is, MyEl);
+    </script>
+</dom-module>
